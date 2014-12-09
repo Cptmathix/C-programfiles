@@ -149,6 +149,20 @@ int list_remove(struct List* list, int index)
 // (An IndexError would correspond to a return value of 0)
 int list_pop(struct List* list, int* value)
 {
+	struct ListNode* current = list->first;
+	if (current == NULL)
+		return 0;
+		
+	int length = list_length(list);
+		
+    for (int i = 1; i < length-1; i++)
+		current = current->next;
+	
+	struct ListNode* aftercurrent = current->next;
+    *value = aftercurrent->value;
+    current->next = NULL;
+    free(aftercurrent);
+    return 1;
 }
 
 // Prepend the value to the front of the list.
@@ -156,6 +170,23 @@ int list_pop(struct List* list, int* value)
 // Python: list.insert(0, value)
 void list_prepend(struct List* list, int value)
 {
+	struct ListNode* current = list->first;
+	
+	// create a new ListNode to store the value in
+    struct ListNode* node = malloc(sizeof(struct ListNode));
+    node->value = value;
+    node->next = NULL;
+
+    // if the list is empty, make the node the first node
+    if (list->first == NULL)
+        list->first = node;
+    
+    else
+    {
+        // place node at first place (list[0])
+        list->first = node;
+        node->next = current;
+    }
 }
 
 // Insert the element before the given index in the list. A negative index
@@ -166,12 +197,81 @@ void list_prepend(struct List* list, int value)
 // (Note that the behavior for negative indices differs slightly in Python)
 void list_insert(struct List* list, int index, int value)
 {
+	int length = list_length(list);
+	
+	// create a new ListNode to store the value in
+    struct ListNode* node = malloc(sizeof(struct ListNode));
+    node->value = value;
+    node->next = NULL;
+
+    // if the list is empty, make the node the first node
+    if (list->first == NULL)
+        list->first = node;
+    
+    else
+    {
+        struct ListNode* current = list->first;
+        if (index == 0 || index < 0)
+        {
+			// place node at first place if index is negative or 0
+			list->first = node;
+			node->next = current;
+		}
+        else if (index > length-1)
+        {
+			// place node at last place if index is not in current list
+			while (current->next != NULL)
+				current = current->next;
+
+			current->next = node;
+		}
+		else
+		{
+			// place node at requested index
+			for (int i = 0; i < index-1; i++)
+				current = current->next;
+
+			struct ListNode* afternode = current->next;
+			current->next = node;
+			node->next = afternode;
+		}
+    }
 }
 
 // Insert the value at the correct position in a sorted list. Assume that the list
 // is sorted from lowest to highest (ascending). The list must remain sorted!
 void list_insert_sorted(struct List* list, int value)
 {
+	int length = list_length(list);
+	
+	// create a new ListNode to store the value in
+    struct ListNode* node = malloc(sizeof(struct ListNode));
+    node->value = value;
+    node->next = NULL;
+
+    // if the list is empty, make the node the first node
+    if (list->first == NULL)
+        list->first = node;
+    
+    else
+    {
+		// place node in sorted list (and keep the list sorted)
+		struct ListNode* current = list->first;
+		struct ListNode* previous = current;
+		for (int i = 0; i < length-1; i++)
+		{
+			previous = current;
+			current = current->next;
+			if (current->value >= node->value)
+			{
+				previous->next = node;
+				node->next = current;
+				length = i;
+			}
+			if (current->next == NULL)
+				current->next = node;				
+		}	
+	}
 }
 
 // Print the elements of the list in reverse order. For example, if the list contains
@@ -180,10 +280,12 @@ void list_insert_sorted(struct List* list, int value)
 // Python: print(list[::-1])
 void list_print_reverse(struct List* list)
 {
+	
 }
 
 void list_remove_all(struct List* list, int value)
 {
+	
 }
 
 

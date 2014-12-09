@@ -6,35 +6,17 @@ int main()
 {
     // list = []
     struct List* list = list_create();
-
     // list.append(...)
     list_append(list, 5);
     list_append(list, 7);
     list_append(list, 12);
     list_append(list, 15);
-    
-    // list.pop(...)
-    list_remove(list, 2);
 
-    // print(list)
+	list_insert_sorted(list, 20);
+
     list_print(list);
-
-    int i = 2;
-
-    // try:
-    //     value = list[i]
-    //     print(...)
-    // except IndexError:
-    //     print('Index out of range')
-
-    int value;
-    if (list_get(list, i, &value))
-        printf("list[%d] = %d\n", i, value);
-    else
-        puts("Index out of range");
 
     // del list
     list_delete(list);
-
     return 0;
 }
