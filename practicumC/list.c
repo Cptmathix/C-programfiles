@@ -280,12 +280,73 @@ void list_insert_sorted(struct List* list, int value)
 // Python: print(list[::-1])
 void list_print_reverse(struct List* list)
 {
+	printf("[");
 	
+	struct ListNode* current = list->first;
+	struct ListNode* previous = NULL;
+	struct ListNode* currentafter;
+
+    while (current != NULL) 
+    {
+        currentafter = current->next; 
+        current->next = previous;  
+        previous = current;
+        current = currentafter;
+    }
+    list->first = previous;
+	
+	current = list->first;
+	while (current != NULL)		
+	{
+        printf("%d", current->value);
+
+        // no comma after last value
+        if (current->next != NULL)
+            printf(", ");
+
+        current = current->next;
+    }
+
+    printf("]\n");
+    
+    current = list->first;
+    previous = NULL;
+    while (current != NULL) 
+    {
+        currentafter = current->next; 
+        current->next = previous;  
+        previous = current;
+        current = currentafter;
+    }
+    list->first = previous;
 }
 
+// remove all nodes with 'value'
 void list_remove_all(struct List* list, int value)
 {
+	struct ListNode* current = list->first;
 	
+	while (current->value == value)
+	{
+		list->first = current->next;
+		free(current);
+		if (current->next != NULL)
+			current = current->next;
+	}
+	
+	struct ListNode* previous = current;
+	while (current != NULL)
+	{
+		if (current->value == value)
+		{
+			previous->next = current->next;
+			free(current);
+		}
+		else
+			previous = current;
+		
+		current = current->next;
+	}
 }
 
 
@@ -348,6 +409,22 @@ void dlist_delete(struct DList *dlist)
 // Python: print(list[::-1])
 void dlist_print_reverse(struct DList* dlist)
 {
+	printf("[");
+
+	struct DListNode* current = dlist->last;
+
+	while (current != NULL)
+	{
+		printf("%d", current->value);
+
+		// no comma after last value
+		if (current->next != NULL)
+			printf(", ");
+
+		current = current->next;
+	}
+
+	printf("]\n");
 }
 
 // Return the length of the given list (i.e., the number of values in it)

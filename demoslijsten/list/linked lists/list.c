@@ -121,13 +121,21 @@ int list_remove(struct List* list, int index)
 	
 	if (index < 0 || index >= list_length(list))
 		return 0;
+		
+	if (index == 0)
+	{
+		list->first = current->next;
+		free(current);
+	}
+	else
+	{
+		for (int i = 0; i < index-1; i++)
+			current = current->next;
 
-	for (int i = 0; i < index-1; i++)
-		current = current->next;
-
-	struct ListNode* previous = current->next;
-	current->next = previous->next;
-	free(previous);
+		struct ListNode* previous = current->next;
+		current->next = previous->next;
+		free(previous);
+	}
 
 	return 1;
 }
@@ -262,5 +270,57 @@ void list_insert_sorted(struct List* list, int value)
 				current->next = node;				
 		}	
 	}
+}
+
+// remove all nodes with 'value'
+void list_remove_all(struct List* list, int value)
+{
+	struct ListNode* current = list->first;
+	
+	while (current->value == value)
+	{
+		list->first = current->next;
+		free(current);
+		if (current->next != NULL)
+			current = current->next;
+	}
+	
+	struct ListNode* previous = current;
+	while (current != NULL)
+	{
+		if (current->value == value)
+		{
+			previous->next = current->next;
+			free(current);
+		}
+		else
+			previous = current;
+		
+		current = current->next;
+	}
+}
+
+// print list in reversed order
+void list_print_reverse(struct List* list)
+{
+    reverse(list);
+    list_print(list);
+    reverse(list);
+}
+
+void reverse(struct List* list)
+{
+	struct ListNode* current = list->first;
+	struct ListNode* previous = NULL;
+	struct ListNode* currentafter;
+
+    while (current != NULL) 
+    {
+        currentafter = current->next; 
+        current->next = previous;  
+        previous = current;
+        current = currentafter;
+    }
+    list->first = previous;
 }
 

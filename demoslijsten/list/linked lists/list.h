@@ -20,3 +20,6 @@ int list_pop(struct List* list, int* value);
 void list_prepend(struct List* list, int value);
 void list_insert(struct List* list, int index, int value);
 void list_insert_sorted(struct List* list, int value);
+void list_remove_all(struct List* list, int value);
+void list_print_reverse(struct List* list);
+void reverse(struct List* list);

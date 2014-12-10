@@ -1,4 +1,8 @@
-	
+	list_append(list, 5);
+    list_append(list, 5);
+    list_append(list, 5);
+    list_append(list, 5);
+    list_append(list, 5);	
 
     // list.append(...)
     list_append(list, 5);
