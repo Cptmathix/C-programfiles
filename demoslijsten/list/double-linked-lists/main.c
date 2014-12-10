@@ -5,20 +5,20 @@
 int main()
 {
 
-    struct List* list = list_create();
-
-	list_append(list, 1);
-	list_append(list, 5);
-    list_append(list, 7);
-    list_append(list, 12);
-    list_append(list, 15);
+    struct DList* list = dlist_create();
     
-    list_print(list);
-   
-	list_print_reverse(list);
+    dlist_print(list);
+    
+    dlist_append(list, 5);
+    dlist_append(list, 7);
+    dlist_append(list, 8);
+    dlist_print(list);
+	dlist_print_reverse(list);
 	
-	list_print(list);
-
-    list_delete(list);
+	dlist_remove(list, 1);
+	dlist_print(list);
+	dlist_print_reverse(list);
+	
+    dlist_delete(list);
     return 0;
 }
