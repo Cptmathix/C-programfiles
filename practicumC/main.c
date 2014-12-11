@@ -1,19 +1,25 @@
+#include <stdlib.h>
 #include <stdio.h>
-#include <assert.h>
-
+#include <string.h>
 #include "list.h"
+#include <assert.h>
 
 int test_list()
 {
+	puts("starting test");
+	
 	int value = 0;
 	struct List *list = list_create();
-
+	
+	puts("empty list created");
+	
 	if (list_length(list) != 0) {
 		printf("list_length of empty list should be zero\n");
 		return 0;
 	}
 
-
+	puts("list_length ok");
+	
 	// Insert value 101 and test functions
 	list_insert(list, 0, 101);
 	if (list_length(list) != 1) {
@@ -29,7 +35,6 @@ int test_list()
 		printf("list_get should return value 101\n");
 		return 0;
 	}
-
 
 	// Insert value 202 and test functions
 	list_insert(list, 0, 202);
@@ -47,7 +52,8 @@ int test_list()
 		return 0;
 	}
 
-
+	puts("list_insert ok");
+	
 	// Test remove function
 	if (list_remove(list, 1) == 0) {
 		printf("Error in list_remove\n");
@@ -58,23 +64,27 @@ int test_list()
 		return 0;
 	}
 	
+	puts("list_remove ok");
 
 	// Test pop function
 	if (list_pop(list, &value) == 0) {
 		printf("Error in list_pop\n");
 		return 0;
 	}
+
 	if (value != 202) {
 		printf("list_pop should return 202\n");
 		return 0;
 	}
+
 	if (list_length(list) != 0) {
 		printf("list_length should return 0 (after pop)\n");
 		return 0;
 	}
 
+	puts("list_pop ok");
 
-	// TODO: Add our own test functions (!!)
+	
 
 	return 1;
 }
@@ -105,24 +115,122 @@ int test_evaluate()
 		printf("Error evaluating string\n");
 		return 0;
 	}
+	
+	puts("test 1 evaluate ok");
+	
 	if (value != 10) {
 		printf("Evaluate returned wrong result\n");
 		return 0;
 	}
+	
+	puts("test 1 value ok");
 
 	// Test 2
 	if (evaluate("6 4 + 10 *", &value) == 0) {
 		printf("Error evaluating string\n");
 		return 0;
 	}
+	
+	puts("test 2 evaluate ok");
+	
 	if (value != 100) {
 		printf("Evaluate returned wrong result\n");
 		return 0;
 	}
+	
+	puts("test 2 value ok");
 
-	// TODO: Add more test! For example: using negative numbers, testing
-	// that it returns 0 on invalid expressions, etc.
+	// Test 3
+	if (evaluate("101 44 +", &value) == 0) {
+		printf("Error evaluating string\n");
+		return 0;
+	}
+	
+	puts("test 3 evaluate ok");
+	
+	if (value != 145) {
+		printf("Evaluate returned wrong result\n");
+		return 0;
+	}
+	
+	puts("test 3 value ok");
+	
+	// Test 4
+	if (evaluate("1 5 + 2 /", &value) == 0) {
+		printf("Error evaluating string\n");
+		return 0;
+	}
+	
+	puts("test 4 evaluate ok");
+	
+	if (value != 3) {
+		printf("Evaluate returned wrong result\n");
+		return 0;
+	}
+	
+	puts("test 4 value ok");
+	
+	// Test 5
+	if (evaluate("1 2 - 5 - 15 5 / +", &value) == 0) {
+		printf("Error evaluating string\n");
+		return 0;
+	}
+	
+	puts("test 5 evaluate ok");
+	
+	if (value != -3) {
+		printf("Evaluate returned wrong result\n");
+		return 0;
+	}
+	
+	puts("test 5 value ok");
 
+	// Test 6
+	if (evaluate("5 2 2 - /", &value) != 0) {
+		printf("Error you may not divide by zero\n");
+		return 0;
+	}
+	
+	puts("test 6 evaluate ok");
+	
+	// Test 7
+	if (evaluate("-5 10 *", &value) == 0) {
+		printf("Error evaluating string\n");
+		return 0;
+	}
+	
+	puts("test 7 evaluate ok");
+	
+	if (value != -50) {
+		printf("Evaluate returned wrong result\n");
+		return 0;
+	}
+	
+	puts("test 7 value ok");
+	
+	// Test 8
+	if (evaluate("70 -7 /", &value) == 0) {
+		printf("Error evaluating string\n");
+		return 0;
+	}
+	
+	puts("test 8 evaluate ok");
+	
+	if (value != -10) {
+		printf("Evaluate returned wrong result\n");
+		return 0;
+	}
+	
+	puts("test 8 value ok");
+	
+	// Test 9
+	if (evaluate("", &value) != 0) {
+		printf("Error there should be no result\n");
+		return 0;
+	}
+	
+	puts("test 9 evaluate ok");
+	
 	return 1;
 }
 
