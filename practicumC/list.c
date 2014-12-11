@@ -253,23 +253,31 @@ void list_insert_sorted(struct List* list, int value)
     if (list->first == NULL)
         list->first = node;
     
+    
     else
     {
 		// place node in sorted list (and keep the list sorted)
 		struct ListNode* current = list->first;
 		struct ListNode* previous = current;
+		
 		for (int i = 0; i < length-1; i++)
 		{
+			if (current->value > node->value)
+			{
+				list->first = node;
+				node->next = current;
+				break;
+			}
 			previous = current;
 			current = current->next;
 			if (current->value >= node->value)
 			{
 				previous->next = node;
 				node->next = current;
-				length = i;
+				break;
 			}
 			if (current->next == NULL)
-				current->next = node;				
+				current->next = node;			
 		}	
 	}
 }
@@ -693,12 +701,82 @@ void stack_delete(struct Stack* stack)
 }
 
 
-
 // Evaluate the postfix expression given in parameter `formula`.
 //
 // Returns 0 if formula is an invalid postfix expression, and 1 if it is a valid
 // postfix expression. The result is returned using the pointer `result`.
 int evaluate(char* formula, int* result)
 {
+	int val;
+    char *pstr = formula;
+    char character[10];
+    
+    
+	struct Stack* stack = malloc(sizeof(struct Stack));
+	stack->top = NULL;
+    
+    int length = strlen(formula);
+    for (int i = 1; i < length && formula[i++] != '\0'; i++)
+    {
+		int count;
+		for (int x = 1; x != length; x++)
+		{
+			strncpy(character, pstr, 1);
+			character[1] = '\0';
+			if (character[0] == ' ' || character[0] == '\0')
+			{
+				count = x;
+				pstr -= count-1;
+				break;
+			}
+			else
+				pstr++;
+		}
+		strncpy(character, pstr, count);
+		pstr += count;
+		character[count+1] = '\0';
+		val = atoi(character);
+		
+		if (val != 0)
+		{
+			stack_push(stack, val);
+		}
+		else
+		{
+			int value1;
+			int value2;
+			if (character[0] == '*')
+			{
+				if (stack_pop(stack, &value1) && stack_pop(stack, &value2))
+					stack_push(stack, value1*value2);
+				else
+					return 0;
+			}
+			else if (character[0] == '/')
+			{
+				if (stack_pop(stack, &value1) && stack_pop(stack, &value2))
+					stack_push(stack, value2/value1);
+				else 
+					return 0;
+			}
+			else if (character[0] == '+')
+			{
+				if (stack_pop(stack, &value1) && stack_pop(stack, &value2))
+					stack_push(stack, value1+value2);
+				else
+					return 0;
+			}
+			else
+			{
+				if (stack_pop(stack, &value1) && stack_pop(stack, &value2))
+					stack_push(stack, value2-value1);
+				else
+					return 0;
+			}
+		}
+	}
+	stack_pop(stack, result);
+	stack_delete(stack);
+	return 1;
 }
 
