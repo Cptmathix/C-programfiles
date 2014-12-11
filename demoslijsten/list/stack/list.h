@@ -16,5 +16,5 @@ int stack_isempty(struct Stack* stack);
 void stack_delete(struct Stack* stack);
 
 
-// int evaluate(char* formula, int* result);
+int evaluate(char* formula, int* result);
 

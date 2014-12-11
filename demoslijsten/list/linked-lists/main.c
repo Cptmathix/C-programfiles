@@ -13,6 +13,8 @@ int main()
     list_append(list, 12);
     list_append(list, 15);
     
+    list_insert_sorted(list, 0);
+    
     list_print(list);
    
 	list_print_reverse(list);

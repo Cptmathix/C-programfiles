@@ -1,21 +1,20 @@
 #include "list.h"
-
+#include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 int main()
 {
-    struct Stack* stack = stack_create();
-	stack_print(stack);
-	stack_push(stack, 5);
-	stack_print(stack);
-	
-	int value;
-	if (stack_pop(stack, &value))
-		printf("pop = %i\n", value);
+    char str[100];
+    strcpy(str, "1 2 - 5 - 15 5 / 5 + +");
+    int length = strlen(str);
+    str[length] = '\0';
+    int result;
+    
+    if (evaluate(str, &result))
+		printf("result = %i\n", result);
 	else
-		puts("stack is empty");
-	stack_print(stack);
-	
-	stack_delete(stack);
+		printf("error\n");
+
     return 0;
 }

@@ -251,23 +251,31 @@ void list_insert_sorted(struct List* list, int value)
     if (list->first == NULL)
         list->first = node;
     
+    
     else
     {
 		// place node in sorted list (and keep the list sorted)
 		struct ListNode* current = list->first;
 		struct ListNode* previous = current;
+		
 		for (int i = 0; i < length-1; i++)
 		{
+			if (current->value > node->value)
+			{
+				list->first = node;
+				node->next = current;
+				break;
+			}
 			previous = current;
 			current = current->next;
 			if (current->value >= node->value)
 			{
 				previous->next = node;
 				node->next = current;
-				length = i;
+				break;
 			}
 			if (current->next == NULL)
-				current->next = node;				
+				current->next = node;			
 		}	
 	}
 }
