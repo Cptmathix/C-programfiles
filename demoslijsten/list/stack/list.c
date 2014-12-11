@@ -95,39 +95,79 @@ void stack_delete(struct Stack* stack)
 
 int evaluate(char* formula, int* result)
 {
+	int length = strlen(formula);
+	
+	if (length == 0)
+	{
+		puts("error: empty formula");
+		return 0;
+	}
+	
 	int val;
     char *pstr = formula;
     char character[10];
     
-    
 	struct Stack* stack = malloc(sizeof(struct Stack));
 	stack->top = NULL;
+	
+	int check = 0;
+	for (int i = 0; i < length && check != 1; i++)
+	{
+		strncpy(character, pstr, 1);
+		if (character[0] == ' ')
+			check = 1;
+		else if (i+1 == length)
+		{
+			*result = atoi(formula);
+			stack_delete(stack);
+			puts("note: if this is not the correct result pls use spaces in your formula");
+			return 1;
+		}
+		else
+			pstr++;
+    }
     
-    int length = strlen(formula);
-    for (int i = 1; i < length && formula[i++] != '\0'; i++)
+    pstr = formula;
+    for (int i = 0; i < length; i++)
     {
+		strncpy(character, pstr, 1);
+		if (character[0] == '\0')
+			break;
+		puts("#######################");
 		int count;
 		for (int x = 1; x != length; x++)
 		{
 			strncpy(character, pstr, 1);
 			character[1] = '\0';
-			if (character[0] == ' ' || character[0] == '\0')
+			if (character[0] == ' ') 
 			{
 				count = x;
 				pstr -= count-1;
 				break;
 			}
 			else
+			{
+				strncpy(character, pstr, 2);
+				character[2] = '\0';
+				if (character[1] == '\0')
+				{
+					count = x;
+					pstr -= count-1;
+					break;
+				}
 				pstr++;
+			}
 		}
 		strncpy(character, pstr, count);
 		pstr += count;
-		character[count+1] = '\0';
+		character[count++] = '\0';
+		printf("character = %s\n", character);
 		val = atoi(character);
 		
 		if (val != 0)
 		{
 			stack_push(stack, val);
+			stack_print(stack);
 		}
 		else
 		{
@@ -138,33 +178,64 @@ int evaluate(char* formula, int* result)
 				if (stack_pop(stack, &value1) && stack_pop(stack, &value2))
 					stack_push(stack, value1*value2);
 				else
+				{
+					puts("error: incorrect formula");
 					return 0;
+				}
 			}
 			else if (character[0] == '/')
 			{
 				if (stack_pop(stack, &value1) && stack_pop(stack, &value2))
-					stack_push(stack, value2/value1);
+				{
+					if (value1 != 0)
+						stack_push(stack, value2/value1);
+					else
+					{
+						puts("error: divide by zero");
+						return 0;
+					}
+				}
 				else 
+				{
+					puts("error: incorrect formula");
 					return 0;
+				};
 			}
 			else if (character[0] == '+')
 			{
 				if (stack_pop(stack, &value1) && stack_pop(stack, &value2))
 					stack_push(stack, value1+value2);
 				else
+				{
+					puts("error: incorrect formula");
 					return 0;
+				}
 			}
 			else
 			{
 				if (stack_pop(stack, &value1) && stack_pop(stack, &value2))
 					stack_push(stack, value2-value1);
 				else
+				{
+					puts("error: incorrect formula");
 					return 0;
+				}
 			}
+			stack_print(stack);
 		}
 	}
 	stack_pop(stack, result);
-	stack_delete(stack);
-	return 1;
+	int empty;
+	if (stack_pop(stack, &empty))
+	{
+		stack_delete(stack);
+		puts("error: incorrect formula");
+		return 0;
+	}
+	else
+	{
+		stack_delete(stack);
+		return 1;
+	}
 }
 

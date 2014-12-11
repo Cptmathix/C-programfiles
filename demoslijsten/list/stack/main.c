@@ -6,15 +6,14 @@
 int main()
 {
     char str[100];
-    strcpy(str, "1 2 - 5 - 15 5 / 5 + +");
+    strcpy(str, "70 -7 + -");
     int length = strlen(str);
     str[length] = '\0';
     int result;
-    
     if (evaluate(str, &result))
 		printf("result = %i\n", result);
 	else
-		printf("error\n");
+		printf("an error occurred, couldn't get a result.\n");
 
     return 0;
 }
