@@ -711,7 +711,7 @@ void stack_delete(struct Stack* stack)
 //
 // Returns 0 if formula is an invalid postfix expression, and 1 if it is a valid
 // postfix expression. The result is returned using the pointer `result`.
-int evaluate(char* formula, int* result)
+int evaluate(const char* formula, int* result)
 {
 	int length = strlen(formula);
 	
@@ -722,7 +722,7 @@ int evaluate(char* formula, int* result)
 	}
 	
 	int val;
-    char *pstr = formula;
+    const char *pstr = formula;
     char character[10];
     
 	struct Stack* stack = malloc(sizeof(struct Stack));
