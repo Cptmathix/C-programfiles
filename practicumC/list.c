@@ -129,6 +129,13 @@ int list_remove(struct List* list, int index)
 	
 	if (index < 0 || index >= list_length(list))
 		return 0;
+		
+	if (current->next == NULL)
+	{
+		free(current);
+		list->first = NULL;
+		return 1;
+	}
 
 	for (int i = 0; i < index-1; i++)
 		current = current->next;
@@ -155,6 +162,7 @@ int list_pop(struct List* list, int* value)
 	
 	if (current->next == NULL)
 	{
+		*value = current->value;
 		free(current);
 		list->first = NULL;
 		return 1;
@@ -476,7 +484,7 @@ int dlist_get(struct DList* dlist, int index, int* value)
 	{
 		struct DListNode* current = dlist->last;
 
-		for (int i = length; i > index; i--)
+		for (int i = length-1; i > index; i--)
 			current = current->prev;
 
 		*value = current->value;
@@ -598,6 +606,15 @@ int dlist_remove(struct DList* dlist, int index)
 	
 	if (index < 0 || index >= length)
 		return 0;
+	
+	if (index == 0 && currentf->next == NULL && currentl->next == NULL)
+	{
+		dlist->first = NULL;
+		dlist->last = NULL;
+		dlist->length = 0;
+		free(currentf);
+		return 1;
+	}
 		
 	if (index == 0)
 	{
