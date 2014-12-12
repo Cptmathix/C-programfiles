@@ -26,7 +26,6 @@ void stack_print(struct Stack* stack)
 		// no comma after last value
 		if (current->next != NULL)
 			printf(", ");
-
 		current = current->next;
 	}
 

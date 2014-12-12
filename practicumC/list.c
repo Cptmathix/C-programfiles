@@ -685,8 +685,7 @@ int stack_pop(struct Stack* stack, int *value)
 // Otherwise it returns 0.
 int stack_isempty(struct Stack* stack)
 {
-	struct StackNode* current = stack->top;
-	if (current == NULL)
+	if (stack->top == NULL)
 		return 1;
 	return 0;
 }
@@ -779,7 +778,7 @@ int evaluate(const char* formula, int* result)
 		character[count++] = '\0';
 		val = atoi(character);
 		
-		if (val != 0)
+		if (val != 0 || character[0] == '0')
 		{
 			stack_push(stack, val);
 		}

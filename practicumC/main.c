@@ -52,7 +52,7 @@ int test_list()
 		return 0;
 	}
 
-	puts("list_insert ok");
+	puts("list_insert and list_get ok");
 	
 	// Test remove function
 	if (list_remove(list, 1) == 0) {
@@ -64,6 +64,40 @@ int test_list()
 		return 0;
 	}
 	
+	list_print(list);
+	
+	if (list_remove(list, 1) != 0) {
+		printf("Error in list_remove\n");
+		return 0;
+	}
+	if (list_length(list) != 1) {
+		printf("list_length should return 1 (after remove)\n");
+		return 0;
+	}
+	
+	list_print(list);
+	
+	if (list_remove(list, 0) == 0) {
+		printf("Error in list_remove\n");
+		return 0;
+	}
+	
+	if (list_length(list) != 0) {
+		printf("list_length should return 1 (after remove)\n");
+		return 0;
+	}
+	
+	list_print(list);
+	
+	if (list_remove(list, 0) != 0) {
+		printf("Error in list_remove\n");
+		return 0;
+	}
+	
+	if (list_length(list) != 0) {
+		printf("list_length should return 1 (after remove)\n");
+		return 0;
+	}
 	puts("list_remove ok");
 
 	// Test pop function
@@ -84,6 +118,70 @@ int test_list()
 
 	puts("list_pop ok");
 
+	// test list_append()
+	
+	list_append(list, -5);
+	list_append(list, 0);
+	list_append(list, 15);
+	
+	if (list_length(list) != 3) {
+		printf("list_length should return 0 (after pop)\n");
+		return 0;
+	}
+	
+	if (list_get(list, 0, &value) != 1) {
+		printf("Error in list_append\n");
+		return 0;
+	}
+	
+	if (value != -5) {
+		printf("list_get should return -5\n");
+		return 0;
+	}
+	
+	if (list_get(list, 1, &value) != 1) {
+		printf("Error in list_append\n");
+		return 0;
+	}
+	
+	if (value != 0) {
+		printf("list_get should return 0\n");
+		return 0;
+	}
+
+	if (list_get(list, 2, &value) != 1) {
+		printf("Error in list_append\n");
+		return 0;
+	}
+	
+	if (value != 15) {
+		printf("list_get should return 15\n");
+		return 0;
+	}
+	
+	if (list_pop(list, &value) == 0) {
+		printf("Error in list_pop\n");
+		return 0;
+	}
+	
+	if (list_pop(list, &value) == 0) {
+		printf("Error in list_pop\n");
+		return 0;
+	}
+	
+	if (list_pop(list, &value) == 0) {
+		printf("Error in list_pop\n");
+		return 0;
+	}
+	
+	if (list_get(list, 0, &value) != 0) {
+		printf("Error in list_get\n");
+		return 0;
+	}
+	
+	puts("list_append ok");
+	
+	//
 	
 
 	return 1;
@@ -230,6 +328,29 @@ int test_evaluate()
 	}
 	
 	puts("test 9 evaluate ok");
+
+	// Test 10
+	if (evaluate("0 2 +", &value) == 0) {
+		printf("Error evaluating string\n");
+		return 0;
+	}
+	
+	puts("test 10 evaluate ok");
+	
+	if (value != 2) {
+		printf("Evaluate returned wrong result\n");
+		return 0;
+	}
+	
+	puts("test 10 value ok");
+	
+	// Test 11
+	if (evaluate("0 2 + 9 * 6 - 5 5 /", &value) != 0) {
+		printf("Error there should be no result\n");
+		return 0;
+	}
+	
+	puts("test 11 evaluate ok");
 	
 	return 1;
 }
