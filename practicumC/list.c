@@ -347,7 +347,7 @@ void list_print_reverse(struct List* list)
 void list_remove_all(struct List* list, int value)
 {
 	struct ListNode* current = list->first;
-	
+
 	while (current->value == value)
 	{
 		list->first = current->next;
@@ -366,7 +366,7 @@ void list_remove_all(struct List* list, int value)
 		}
 		else
 			previous = current;
-		
+
 		current = current->next;
 	}
 }
